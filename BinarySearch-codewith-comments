@@ -1,0 +1,94 @@
+
+# ==========================================
+# CS-WALLAH 🚀 | BINARY SEARCH IN PYTHON
+# ==========================================
+
+# We are creating a function named binary.
+# It accepts two inputs:
+# arr    = The sorted list in which we want to search.
+# target = The number that we want to find.
+def binary(arr, target):
+
+    # LEFT represents the starting index of our search.
+    # Initially, we start searching from index 0.
+    left = 0
+
+    # RIGHT represents the ending index of our search.
+    # len(arr) gives the total number of elements.
+    # Since indexing starts from 0, we subtract 1.
+    # For example: 8 elements means the last index is 7.
+    right = len(arr) - 1
+
+    # Keep searching as long as LEFT is less than or equal to RIGHT.
+    # This means there are still elements available to search.
+    while left <= right:
+
+        # Calculate the middle index of the current search range.
+        # // performs floor division (returns an integer).
+        # Example: (0 + 7) // 2 = 3
+        mid = (left + right) // 2
+
+        # Check whether the middle element is equal to our target.
+        # arr[mid] accesses the value stored at the middle index.
+        if arr[mid] == target:
+
+            # If the middle element matches our target,
+            # return its index because we have found the element.
+            return mid
+
+        # If the middle element is smaller than our target,
+        # the target must be somewhere on the RIGHT side.
+        elif arr[mid] < target:
+
+            # Move LEFT to the position immediately after MID.
+            # This eliminates the middle element and everything
+            # before it because those values are too small.
+            left = mid + 1
+
+        # Otherwise, the middle element is greater than our target.
+        # Therefore, the target must be somewhere on the LEFT side.
+        else:
+
+            # Move RIGHT to the position immediately before MID.
+            # This eliminates the middle element and everything
+            # after it because those values are too large.
+            right = mid - 1
+
+    # If the while loop finishes without finding the target,
+    # it means the target does not exist in our sorted list.
+    # Return -1 to indicate that the element was not found.
+    return -1
+
+
+# ==========================================
+# MAIN PROGRAM
+# ==========================================
+
+# Binary search ALWAYS requires a sorted array.
+# Our list contains numbers arranged in ascending order.
+arr = [1, 2, 3, 4, 5, 6, 7, 8]
+
+# Ask the user which number they want to search for.
+# input() accepts user input as text.
+# int() converts that text into an integer.
+target = int(input('Enter target to search? '))
+
+# Call our binary search function.
+# Pass the sorted array and the target number.
+# Store the returned index (or -1) inside the result variable.
+result = binary(arr, target)
+
+# Check whether the function returned -1.
+# If yes, the target was not present in the array.
+if result == -1:
+
+    # Display a message saying that the target was not found.
+    print('Not found')
+
+# Otherwise, the target exists in the array.
+else:
+
+    # Display the target number and its index.
+    # result is the index, NOT the actual array value.
+    print(target, 'found at index', result)
+
