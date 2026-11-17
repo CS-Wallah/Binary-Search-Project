@@ -1,0 +1,35 @@
+# ==========================================
+# CS-WALLAH 🚀 | BINARY SEARCH IN PYTHON
+# ==========================================
+
+# We are creating a function named binary.
+# It accepts two inputs:
+# arr    = The sorted list in which we want to search.
+# target = The number that we want to find.
+
+def binary(arr, target):
+  left = 0 #[1=>0,2,3,4,5,6,7,8=>7] 8//2 =4
+  right = len(arr) -1  # set it at the last element of array
+
+  while left <= right:
+    mid = (left + right) //2  # 8//2 = 4
+
+    if arr[mid] == target:
+      return mid
+
+    elif arr[mid] < target:
+      left = mid +1
+
+    else:
+      right = mid -1
+  return -1
+#Binary search always needs a sorted array
+arr = [1,2,3,4,5,6,7,8]
+target = int(input('enter target to search?'))
+
+result = binary(arr, target)
+
+if result == -1:
+  print('not found')
+else:
+  print(target, 'found at' ,{result})
