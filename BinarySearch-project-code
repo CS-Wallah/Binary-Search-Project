@@ -1,0 +1,84 @@
+
+# ==========================================
+# CS-WALLAH 🚀
+# PHONE CONTACT APP USING BINARY SEARCH
+# ==========================================
+
+def binary(arr, target):
+
+    # Starting index of the search
+    left = 0
+
+    # Last index of the search
+    right = len(arr) - 1
+
+    # Continue searching while elements are available
+    while left <= right:
+
+        # Calculate the middle index
+        mid = (left + right) // 2
+
+        # Check whether the middle name matches the target
+        if arr[mid] == target:
+            return mid
+
+        # If middle name comes before target alphabetically,
+        # search in the right half
+        elif arr[mid] < target:
+            left = mid + 1
+
+        # Otherwise, search in the left half
+        else:
+            right = mid - 1
+
+    # Return -1 if the contact is not found
+    return -1
+
+
+# ==========================================
+# CONTACT DATABASE (DICTIONARY)
+# ==========================================
+
+contacts = {
+    "Aarav": "9876500001",
+    "Ananya": "9876500002",
+    "Diya": "9876500003",
+    "Kabir": "9876500004",
+    "Meera": "9876500005",
+    "Rohan": "9876500006",
+    "Sara": "9876500007",
+    "Vivaan": "9876500008"
+}
+
+
+# Create a sorted list of contact names
+names = sorted(contacts.keys())
+
+
+# Ask the user for a contact name
+name = input("Enter a name: ").strip().title()
+
+
+# Search for the name using binary search
+index = binary(names, name)
+
+
+# Display the contact information and index
+if index == -1:
+
+    print("Contact not found")
+
+else:
+
+    print("--------------------------------")
+    print("CONTACT FOUND!")
+    print("--------------------------------")
+
+    print("Name:", name)
+
+    print("Phone Number:", contacts[name])
+
+    # Display the index returned by binary search
+    print("Index:", index)
+
+    print("--------------------------------")
