@@ -1,0 +1,286 @@
+
+# =====================================================
+# CS-WALLAH 🚀
+# PYTHON PHONE CONTACT APP USING BINARY SEARCH + GUI
+# GOOGLE COLAB VERSION
+# =====================================================
+
+import ipywidgets as widgets
+from IPython.display import display, clear_output, HTML
+
+
+# =====================================================
+# 1. BINARY SEARCH ALGORITHM
+# =====================================================
+
+def binary(arr, target):
+
+    # Starting index
+    left = 0
+
+    # Last index
+    right = len(arr) - 1
+
+    # Continue until the search range becomes empty
+    while left <= right:
+
+        # Find the middle index
+        mid = (left + right) // 2
+
+        # Check if the middle element matches the target
+        if arr[mid] == target:
+            return mid
+
+        # Search the right half
+        elif arr[mid] < target:
+            left = mid + 1
+
+        # Search the left half
+        else:
+            right = mid - 1
+
+    # Contact does not exist
+    return -1
+
+
+# =====================================================
+# 2. CONTACT DATABASE
+# =====================================================
+
+contacts = {
+    "Aarav": "9876500001",
+    "Ananya": "9876500002",
+    "Diya": "9876500003",
+    "Kabir": "9876500004",
+    "Meera": "9876500005",
+    "Rohan": "9876500006",
+    "Sara": "9876500007",
+    "Vivaan": "9876500008"
+}
+
+
+# =====================================================
+# 3. CREATE GUI COMPONENTS
+# =====================================================
+
+# Application heading
+heading = widgets.HTML(
+    value="""
+    <div style="
+        background:#10243B;
+        color:white;
+        padding:20px;
+        border-radius:12px;
+        text-align:center;">
+        <h1>📱 CS-Wallah Contacts</h1>
+        <p>Python Binary Search Contact Manager</p>
+    </div>
+    """
+)
+
+# Search input
+search_input = widgets.Text(
+    placeholder="Enter contact name...",
+    description="Name:",
+    layout=widgets.Layout(width="100%")
+)
+
+# Search button
+search_button = widgets.Button(
+    description="🔍 Search Contact",
+    button_style="success",
+    layout=widgets.Layout(width="100%")
+)
+
+# Add contact name
+new_name = widgets.Text(
+    placeholder="Enter full name",
+    description="Name:",
+    layout=widgets.Layout(width="100%")
+)
+
+# Add contact number
+new_phone = widgets.Text(
+    placeholder="Enter 10-digit phone number",
+    description="Phone:",
+    layout=widgets.Layout(width="100%")
+)
+
+# Add contact button
+add_button = widgets.Button(
+    description="➕ Add Contact",
+    button_style="primary",
+    layout=widgets.Layout(width="100%")
+)
+
+# Display all contacts button
+show_button = widgets.Button(
+    description="📋 Show All Contacts",
+    button_style="info",
+    layout=widgets.Layout(width="100%")
+)
+
+# Output area
+output = widgets.Output()
+
+
+# =====================================================
+# 4. SEARCH CONTACT FUNCTION
+# =====================================================
+
+def search_contact(button):
+
+    with output:
+
+        clear_output()
+
+        # Read the entered name
+        name = search_input.value.strip().title()
+
+        # Validate empty input
+        if not name:
+            print("⚠️ Please enter a contact name.")
+            return
+
+        # Generate a sorted list of dictionary keys
+        names = sorted(contacts.keys())
+
+        # Perform binary search
+        index = binary(names, name)
+
+        # Check search result
+        if index == -1:
+
+            print("❌ Contact not found!")
+
+        else:
+
+            # Retrieve phone number using dictionary key
+            phone = contacts[names[index]]
+
+            print("✅ CONTACT FOUND!")
+            print("------------------------------")
+            print("👤 Name:", names[index])
+            print("📞 Phone:", phone)
+            print("------------------------------")
+            print("🔍 Found at sorted-list index:", index)
+
+
+# =====================================================
+# 5. ADD NEW CONTACT FUNCTION
+# =====================================================
+
+def add_contact(button):
+
+    with output:
+
+        clear_output()
+
+        # Read name and phone number
+        name = new_name.value.strip().title()
+        phone = new_phone.value.strip()
+
+        # Validate name
+        if not name:
+            print("⚠️ Please enter a name.")
+            return
+
+        # Validate phone number
+        if not phone.isdigit() or len(phone) != 10:
+            print("⚠️ Enter a valid 10-digit phone number.")
+            return
+
+        # Prevent duplicate contact names
+        if name in contacts:
+            print("⚠️ This contact already exists!")
+            return
+
+        # Save the new contact
+        contacts[name] = phone
+
+        print("✅ Contact added successfully!")
+        print("👤 Name:", name)
+        print("📞 Phone:", phone)
+        print("📊 Total contacts:", len(contacts))
+
+        # Clear input fields
+        new_name.value = ""
+        new_phone.value = ""
+
+
+# =====================================================
+# 6. DISPLAY ALL CONTACTS FUNCTION
+# =====================================================
+
+def show_contacts(button):
+
+    with output:
+
+        clear_output()
+
+        # Sort contact names alphabetically
+        names = sorted(contacts.keys())
+
+        print("📒 ALL SAVED CONTACTS")
+        print("=" * 40)
+
+        for index, name in enumerate(names):
+
+            print(
+                f"{index + 1}. {name} : {contacts[name]}"
+            )
+
+        print("=" * 40)
+        print("Total contacts:", len(contacts))
+
+
+# =====================================================
+# 7. CONNECT BUTTONS TO FUNCTIONS
+# =====================================================
+
+search_button.on_click(search_contact)
+
+add_button.on_click(add_contact)
+
+show_button.on_click(show_contacts)
+
+
+# =====================================================
+# 8. DISPLAY COMPLETE GUI
+# =====================================================
+
+app = widgets.VBox([
+
+    heading,
+
+    widgets.HTML("<h3>🔍 Search Existing Contact</h3>"),
+
+    search_input,
+
+    search_button,
+
+    widgets.HTML("<hr><h3>➕ Add New Contact</h3>"),
+
+    new_name,
+
+    new_phone,
+
+    add_button,
+
+    widgets.HTML("<hr><h3>📋 Contact Directory</h3>"),
+
+    show_button,
+
+    output
+
+], layout=widgets.Layout(
+    width="100%",
+    max_width="650px",
+    padding="15px"
+))
+
+display(app)
+
+# =====================================================
+# END OF CS-WALLAH CONTACT APPLICATION
+# =====================================================
